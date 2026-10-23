@@ -1,0 +1,17 @@
+# 데이터는 Google Drive(Team10_RecSys/data)에 둔다. GitHub에는 올리지 않음
+/data/
+*.parquet
+*.csv
+*.csv.gz
+*.jsonl
+*.jsonl.gz
+*.npz
+*.npy
+*.pkl
+
+# Python / Jupyter
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.env
+.DS_Store
