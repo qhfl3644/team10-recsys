@@ -42,7 +42,7 @@ Team10_RecSys/
 
 ```python
 from google.colab import drive; drive.mount('/content/drive')
-!git clone https://github.com/<OWNER>/team10-recsys.git /content/team10-recsys
+!git clone https://github.com/qhfl3644/team10-recsys.git /content/team10-recsys
 import sys; sys.path.append('/content/team10-recsys')
 from config import *
 ```
