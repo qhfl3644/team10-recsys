@@ -15,12 +15,16 @@ team10-recsys/
 ├── requirements.txt
 ├── docs/CONVENTIONS.md  # 팀 공통 규칙
 ├── notebooks/         # 실행용 Colab 노트북
-│   └── 01_data_prep.ipynb   # 다운로드 → 검증 → 스키마 통일 → item_features
+│   ├── 01_data_prep.ipynb   # 다운로드 → 검증 → 스키마 통일 → item_features
+│   ├── 02_eda.ipynb         # EDA 그래프 5개 + 요약표 (results/eda/)
+│   └── 03_sampling.ipynb    # 프로토콜 ①②③ 후보 파일 + 점검
 ├── src/
-│   ├── data/          # 전처리·EDA·샘플링 프로토콜 (A1~A4)
+│   ├── data/          # 전처리·샘플링 프로토콜 (A1~A4)
+│   │   └── sampling.py      # 프로토콜 ①②③
 │   ├── models/        # 기준 모델, MF, CBF, 하이브리드 (B, C1)
 │   │   └── interface.py     # predict / score 공통 형식
-│   ├── eval/          # 지표, 프로토콜 ①②③, 동점 처리, 부트스트랩 (C)
+│   ├── eval/          # 지표, 동점 처리, 부트스트랩 (C)
+│   │   └── ranking.py       # 동점 무작위 처리 정답 순위 (target_rank, target_rank_full)
 │   └── attack/        # 공격 주입·탐지·회복 측정 (D)
 └── results/           # 작은 그래프·표만 (큰 파일은 Drive)
 ```

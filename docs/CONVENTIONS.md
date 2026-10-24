@@ -25,6 +25,19 @@
 - 위치: `Team10_RecSys/predictions/{데이터셋}/{모델}_{split}.parquet` (예: `mf_valid.parquet`)
 - 컬럼: `user_id, item_id, pred`
 
+## 랭킹 평가 후보 (03_sampling.ipynb)
+
+| 파일 (`processed/{ds}/candidates/`) | 컬럼 | 내용 |
+|---|---|---|
+| `p1_valid`, `p1_test` | uidx, iidx, label | ① 미평가 상품 무작위 99개 + 정답. 사용자당 100행, label=1이 정답 |
+| `p2_valid`, `p2_test` | uidx, iidx, label | ② 정답과 같은 인기도 구간(train 평점 수 log2 구간)에서 99개 + 정답 |
+| `p3_users` | uidx, user_id | ③ 전체 상품 랭킹을 할 고정 사용자 10,000명 (valid·test 공통) |
+| `meta.json` | | 시드, 구간 규칙, 구간을 넓힌 사용자 비율 |
+
+- ③에서 순위에서 빼는 상품: 사용자가 평가한 상품 중 정답을 뺀 나머지 (`sampling.protocol3_exclude`)
+- 정답 순위는 `src/eval/ranking.py`의 `target_rank`(①②), `target_rank_full`(③)로 계산 → 동점은 무작위
+- 상품 인기도: `processed/{ds}/item_popularity.parquet` (item_id, iidx, train_count, bucket)
+
 ## 실험 규칙
 
 - `SEED = 42` (numpy, random, 샘플링 모두)
