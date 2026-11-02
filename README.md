@@ -22,7 +22,8 @@ team10-recsys/
 │   ├── 05_mf.ipynb          # 행렬 분해 (B1~B3)
 │   ├── 06_attack.ipynb      # 공격 주입·탐지·방어 (D)
 │   ├── 07_cbf.ipynb         # 콘텐츠 기반 필터링 (B4)
-│   └── 08_hybrid.ipynb      # 하이브리드 평점 트랙·Top-N 트랙 (B5~B7)
+│   ├── 08_hybrid.ipynb      # 하이브리드 평점 트랙·Top-N 트랙 (B5~B7)
+│   └── runs/                # 실행 결과(출력)가 저장된 노트북 사본 — 코드 수정은 위 원본에서
 ├── src/
 │   ├── data/          # 전처리·샘플링 프로토콜 (A1~A4)
 │   │   └── sampling.py      # 프로토콜 ①②③
