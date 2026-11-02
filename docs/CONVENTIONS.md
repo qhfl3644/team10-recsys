@@ -38,6 +38,21 @@
 - 정답 순위는 `src/eval/ranking.py`의 `target_rank`(①②), `target_rank_full`(③)로 계산 → 동점은 무작위
 - 상품 인기도: `processed/{ds}/item_popularity.parquet` (item_id, iidx, train_count, bucket)
 
+## CBF·하이브리드 결과물 (07_cbf, 08_hybrid)
+
+| 위치 | 파일 | 내용 |
+|---|---|---|
+| `predictions/{ds}/` | `cbf_{split}` | CBF 단독 예측 |
+| | `mf_fb_{split}` | MF 예측에서 train에 없는 상품 행만 CBF로 바꾼 것 (성공 기준 ②의 MF) |
+| | `hybrid_{split}`, `hybrid_grp_{split}` | 평점 하이브리드 (전체 w / 구간별 w) |
+| | `*_retuned_{split}` | Toys 일반화에서 Toys valid로 다시 고른 설정의 예측 (비교용) |
+| `results/cbf/` | `{ds}_cbf_config.json` 외 | k, score_k, TF-IDF 설정, 튜닝표, k 변화 그래프 |
+| `results/hybrid/` | `{ds}_hybrid_config.json` 외 | w, 구간별 w, Top-N 가중치, 성공 기준 판정, 평가표 |
+| | `{ds}_ranking_hits_test.parquet` | Top-N 사용자별 hit (model, protocol, uidx, hit) → 평가 담당 부트스트랩용 |
+
+- Top-N 하이브리드는 `src/models/hybrid.py`의 `RankHybrid(신호 모델들, 가중치)`로 다시 만들 수 있다 (가중치는 `{ds}_hybrid_config.json`의 `rank_weights`)
+- Toys 일반화: 07·08에서 `DS = 'Toys_and_Games'`, `TRANSFER_FROM = 'Video_Games'` → 기본 결과는 Video_Games 설정을 그대로 적용한 값
+
 ## 실험 규칙
 
 - `SEED = 42` (numpy, random, 샘플링 모두)
