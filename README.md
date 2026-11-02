@@ -17,11 +17,20 @@ team10-recsys/
 ├── notebooks/         # 실행용 Colab 노트북
 │   ├── 01_data_prep.ipynb   # 다운로드 → 검증 → 스키마 통일 → item_features
 │   ├── 02_eda.ipynb         # EDA 그래프 5개 + 요약표 (results/eda/)
-│   └── 03_sampling.ipynb    # 프로토콜 ①②③ 후보 파일 + 점검
+│   ├── 03_sampling.ipynb    # 프로토콜 ①②③ 후보 파일 + 점검
+│   ├── 04_baselines_eval.ipynb  # 기준 모델 + 공통 지표 (C)
+│   ├── 05_mf.ipynb          # 행렬 분해 (B1~B3)
+│   ├── 06_attack.ipynb      # 공격 주입·탐지·방어 (D)
+│   ├── 07_cbf.ipynb         # 콘텐츠 기반 필터링 (B4)
+│   └── 08_hybrid.ipynb      # 하이브리드 평점 트랙·Top-N 트랙 (B5~B7)
 ├── src/
 │   ├── data/          # 전처리·샘플링 프로토콜 (A1~A4)
 │   │   └── sampling.py      # 프로토콜 ①②③
 │   ├── models/        # 기준 모델, MF, CBF, 하이브리드 (B, C1)
+│   │   ├── baselines.py     # 기준 모델 4개
+│   │   ├── mf.py            # 행렬 분해
+│   │   ├── cbf.py           # TF-IDF 콘텐츠 기반 필터링
+│   │   ├── hybrid.py        # 하이브리드 두 트랙 (가중 결합, z-점수 랭킹)
 │   │   └── interface.py     # predict / score 공통 형식
 │   ├── eval/          # 지표, 동점 처리, 부트스트랩 (C)
 │   │   └── ranking.py       # 동점 무작위 처리 정답 순위 (target_rank, target_rank_full)
