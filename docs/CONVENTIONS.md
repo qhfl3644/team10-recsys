@@ -1,6 +1,6 @@
-# 팀 공통 규칙 (10/24 킥오프 합의안)
+# 팀 공통 규칙 (10/24 킥오프 합의안, 이후 변경 반영)
 
-> 킥오프에서 바뀐 내용은 이 파일을 고친 뒤 커밋한다.
+> 바뀐 내용은 이 파일을 고친 뒤 커밋한다. 평가 규칙은 `docs/EVAL_RULES.md`가 우선한다.
 
 ## 데이터 파일
 
@@ -15,15 +15,23 @@
 
 ## 모델 형식
 
-`src/models/interface.py` 참고.
+> 10/29 `docs/EVAL_RULES.md` 규칙 2로 바뀜. 평가 코드는 아래 **정수 번호 배열** 형식만 쓴다.
 
-- `predict(user_id, item_ids)`: 같은 순서·길이의 예측 평점, 1~5 clip, NaN 금지
-- `score(user_id, item_ids)`: Top-N용 원점수, clip 없음
+| 메서드 | 형식 | 용도 |
+|---|---|---|
+| `predict(uidx, iidx)` | 같은 길이의 예측 평점, 1~5 clip, NaN 금지 | 평점 트랙 |
+| `score(uidx, iidx)` | 원점수, clip 없음 | Top-N 프로토콜 ①② |
+| `score_rows(uidx)` | `(사용자 수, 전체 상품 수)` 행렬, clip 없음 | Top-N 프로토콜 ③ |
+
+- 예: `src/models/baselines.py`, `mf.py`, `cbf.py`, `hybrid.py`의 `RankHybrid`
+- `src/models/interface.py`의 문자열 ID·한 명씩 형식(`predict(user_id, item_ids)`)은 처음 합의안이다. 필요하면 `baselines.IdAdapter`로 감싸서 쓴다.
 
 ## 예측값 주고받기
 
 - 위치: `Team10_RecSys/predictions/{데이터셋}/{모델}_{split}.parquet` (예: `mf_valid.parquet`)
-- 컬럼: `user_id, item_id, pred`
+- 컬럼: `user_id, item_id, uidx, iidx, pred` (10/29 EVAL_RULES 규칙 2로 `uidx, iidx` 추가)
+- 저장은 `metrics.save_predictions(ds, 모델, split, data.valid 또는 data.test, pred)`를 쓰면 형식이 자동으로 맞는다
+- Top-N 트랙은 파일 대신 `score`·`score_rows`를 가진 **모델 객체**로 넘긴다 (프로토콜 ③은 사용자당 전체 상품 점수가 필요)
 
 ## 랭킹 평가 후보 (03_sampling.ipynb)
 
@@ -57,7 +65,8 @@
 
 - `SEED = 42` (numpy, random, 샘플링 모두)
 - 하이퍼파라미터·가중치는 **valid로만** 선택, test는 마지막에 한 번만
-- 랭킹 동점은 무작위로 순위 결정 (평가 담당 함수 사용)
+- 랭킹 동점은 무작위로 순위 결정 (`src/eval/ranking.py`, 평가 함수가 자동으로 사용)
+- 신뢰구간과 성공 기준 판정은 평가 담당이 `src/eval/metrics.py`로 한꺼번에 계산한다 (`docs/EVAL_RULES.md` 규칙 1·3)
 
 ## Git
 
