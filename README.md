@@ -19,6 +19,7 @@ team10-recsys/
 ├── notebooks/                   # 실행용 Colab 노트북 (번호 순서대로 실행)
 │   ├── 01_data_prep.ipynb       # 다운로드 → 검증 → 스키마 통일 → item_features (A1~A2)
 │   ├── 02_eda.ipynb             # EDA 그래프 5개 + 요약표 (A3)
+│   ├── 02b_dataset_overlap.ipynb # 두 데이터셋의 사용자·상품 중복 (보고서 2.4절)
 │   ├── 03_sampling.ipynb        # 프로토콜 ①②③ 후보 파일 + 점검 (A4)
 │   ├── 04_baselines_eval.ipynb  # 기준 모델 + 공통 지표 (C1~C2)
 │   ├── 05_mf.ipynb              # 행렬 분해 (B1~B3)
@@ -34,7 +35,8 @@ team10-recsys/
 │   └── run_baselines.py         # 04 노트북과 같은 내용의 실행 스크립트
 ├── src/
 │   ├── data/
-│   │   └── sampling.py          # 프로토콜 ①②③ 후보 샘플링 (A4)
+│   │   ├── sampling.py          # 프로토콜 ①②③ 후보 샘플링 (A4)
+│   │   └── overlap.py           # 두 데이터셋의 사용자·상품 중복 (02b)
 │   ├── models/
 │   │   ├── interface.py         # 처음 합의한 문자열 ID 형식 (평가는 정수 번호 형식, docs/EVAL_RULES.md 규칙 2)
 │   │   ├── baselines.py         # 기준 모델 4개: 전역·사용자·상품 평균, 인기도 (C1)
@@ -66,7 +68,7 @@ Team10_RecSys/
 │       └── candidates/                             # 프로토콜 ①② 후보, ③ 사용자 (03)
 ├── predictions/{Video_Games, Toys_and_Games}/      # 모델별 valid·test 예측값 (04, 05, 07, 08)
 └── results/
-    ├── eda/                                        # EDA 그래프·요약표 (02)
+    ├── eda/                                        # EDA 그래프·요약표 (02), 데이터셋 중복표 overlap_* (02b)
     ├── sampling_sanity_check.csv                   # 샘플링 점검표 (03)
     ├── baselines/                                  # 기준 모델 평가표 (04)
     ├── mf/                                         # MF 튜닝·구성요소 분석·설정 (05)
@@ -123,7 +125,7 @@ from config import *
 
 | 순서 | 노트북 | 필요한 것 |
 |---|---|---|
-| 1 | 01 → 02 → 03 | 없음 (01이 원본을 내려받음) |
+| 1 | 01 → 02 → 03 | 없음 (01이 원본을 내려받음). 02b는 01 뒤 아무 때나 (03이 있으면 ③ 표본 비율도 계산) |
 | 2 | 04, 05 | 03까지의 결과 |
 | 3 | 06 | 05의 MF 설정 |
 | 4 | 07 → 08 | 03까지의 결과. 08은 07의 `cbf` 예측값과 설정이 필요. MF 예측값 파일이 없으면 08이 직접 만든다 |
